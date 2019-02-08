@@ -36,5 +36,11 @@ public class DeckTester {
 		System.out.println("DEAL: " + test2.deal());
 
 		System.out.println(test2);
+      
+      System.out.println("SHUFFLE!");
+      
+      test2.shuffle();
+      
+      System.out.println(test2);
 	}
 }
