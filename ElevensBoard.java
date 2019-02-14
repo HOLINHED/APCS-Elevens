@@ -53,8 +53,12 @@ public class ElevensBoard extends Board {
 	 */
 	@Override
 	public boolean isLegal(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		return true;
+		
+		if (selectedCards.size() == 2) return containsPairSum11(selectedCards);
+
+		else if (selectedCards.size() == 3) return containsJQK(selectedCards);
+
+		return false;
 	}
 
 	/**
@@ -67,8 +71,28 @@ public class ElevensBoard extends Board {
 	 */
 	@Override
 	public boolean anotherPlayIsPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		return true;
+
+		ArrayList<Integer> cards = new ArrayList<Integer>();
+
+		// Loops through entire board
+		for (int i = 0; i < BOARD_SIZE; i++) {
+
+				// checks if existing non-face play
+				for (int j = i + 1; j < BOARD_SIZE ; j++) {
+
+						ArrayList<Integer> cardz = new ArrayList<Integer>();
+						cardz.add(i);
+						cardz.add(j);
+
+						if (containsPairSum11(cardz)) return true;
+				}
+
+				// stores card
+				cards.add(i);
+		}
+
+		// checks if contains jack, queen, king combo
+		return containsJQK(cards);
 	}
 
 	/**
@@ -80,8 +104,20 @@ public class ElevensBoard extends Board {
 	 *              contain an 11-pair; false otherwise.
 	 */
 	private boolean containsPairSum11(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		return true;
+		
+		int indexOne = selectedCards.get(0);
+		int indexTwo = selectedCards.get(1);
+
+		int cardOne = cardAt(indexOne).pointValue();
+		int cardTwo = cardAt(indexTwo).pointValue();
+
+		// System.out.println("CHECKING CARD SUMS cardOne: " + cardOne + "   cardTwo: " + cardTwo);
+		// System.out.println(cardOne + " + " + cardTwo + " == 11 ? " + ((cardOne + cardTwo) == 11));
+
+		if (cardOne < 1 || cardOne > 10 
+		 || cardTwo < 1 || cardTwo > 10) return false;
+
+		return (cardOne + cardTwo) == 11;
 	}
 
 	/**
@@ -93,7 +129,19 @@ public class ElevensBoard extends Board {
 	 *              include a jack, a queen, and a king; false otherwise.
 	 */
 	private boolean containsJQK(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
-		return true;
+		
+		int numKing = 0;
+		int numQueen = 0;
+		int numJack = 0;
+
+		for (int card : selectedCards) {
+
+			if (cardAt(card).rank().equals("king")) numKing += numKing < 1 ? 1 : 0;
+			if (cardAt(card).rank().equals("queen")) numQueen += numQueen < 1 ? 1 : 0;
+			if (cardAt(card).rank().equals("jack")) numJack += numJack < 1 ? 1 : 0;
+
+		}
+
+		return (numKing + numQueen + numJack) == 3;
 	}
 }
