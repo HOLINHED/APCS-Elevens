@@ -116,8 +116,8 @@ public class ThirteensBoard extends Board {
 	 * @return true if a legal play was found (and made); false othewise.
 	 */
 	public boolean playIfPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 11 *** */
-		return false; // REPLACE !
+
+		return playPairSum13IfPossible() || playKingIfPossible();
 	}
 
 	/**
@@ -127,8 +127,28 @@ public class ThirteensBoard extends Board {
 	 * @return true if an 13-pair play was found (and made); false othewise.
 	 */
 	private boolean playPairSum13IfPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 11 *** */
-		return false; // REPLACE !
+		
+      List<Integer> cards = cardIndexes();
+      
+      for (int card : cards) {
+         
+         for (int n = card + 1; n < BOARD_SIZE; n++) {
+            
+            List<Integer> toCheck = new ArrayList<Integer>();
+            toCheck.add(card);
+            toCheck.add(n);
+            
+            if (containsPairSum13(toCheck)) {
+               
+               replaceSelectedCards(toCheck);
+               
+               return true;
+            
+            }
+         }
+      } 
+      
+		return false; 
 	}
 
 	/**
@@ -138,7 +158,21 @@ public class ThirteensBoard extends Board {
 	 * @return true if a king play was found (and made); false othewise.
 	 */
 	private boolean playKingIfPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 11 *** */
-		return false; // REPLACE !
+		
+      List<Integer> cards = cardIndexes();
+      
+      for (int card : cards) {
+   
+         List<Integer> toCheck = new ArrayList<Integer>();
+         toCheck.add(card);
+         
+         if (containsKing(toCheck)) {
+            
+            replaceSelectedCards(toCheck);
+            return true;
+         }
+      }
+      
+		return false;
 	}
 }
