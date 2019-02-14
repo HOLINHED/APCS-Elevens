@@ -144,4 +144,53 @@ public class ElevensBoard extends Board {
 
 		return (numKing + numQueen + numJack) == 3;
 	}
+   
+    /**
+	 * Looks for a legal play on the board.  If one is found, it plays it.
+	 * @return true if a legal play was found (and made); false othewise.
+	 */
+	public boolean playIfPossible() {
+
+		return playPairSum11IfPossible() || playJQKIfPossible();
+	}
+
+	/**
+	 * Looks for a pair of non-face cards whose values sum to 11.
+	 * If found, replace them with the next two cards in the deck.
+	 * The simulation of this game uses this method.
+	 * @return true if an 11-pair play was found (and made); false othewise.
+	 */
+	private boolean playPairSum11IfPossible() {
+		
+      List<Integer> cards = cardIndexes();
+      
+      for (int card : cards) {
+         
+         for (int n = card + 1; n < BOARD_SIZE; n++) {
+            
+            List<Integer> toCheck = new ArrayList<Integer>();
+            toCheck.add(card);
+            toCheck.add(n);
+            
+            if (containsPairSum11(toCheck)) {
+            
+               replaceSelectedCards(toCheck);
+               return true;
+            }
+         }
+      }
+      
+		 return false;
+	}
+
+	/**
+	 * Looks for a group of three face cards JQK.
+	 * If found, replace them with the next three cards in the deck.
+	 * The simulation of this game uses this method.
+	 * @return true if a JQK play was found (and made); false othewise.
+	 */
+	private boolean playJQKIfPossible() {
+		/* *** TO BE IMPLEMENTED IN ACTIVITY 11 *** */
+		return false; // REPLACE !
+	}
 }
