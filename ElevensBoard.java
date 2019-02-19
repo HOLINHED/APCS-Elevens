@@ -108,16 +108,21 @@ public class ElevensBoard extends Board {
 		int indexOne = selectedCards.get(0);
 		int indexTwo = selectedCards.get(1);
 
+		try {
+
 		int cardOne = cardAt(indexOne).pointValue();
 		int cardTwo = cardAt(indexTwo).pointValue();
-
-		// System.out.println("CHECKING CARD SUMS cardOne: " + cardOne + "   cardTwo: " + cardTwo);
-		// System.out.println(cardOne + " + " + cardTwo + " == 11 ? " + ((cardOne + cardTwo) == 11));
 
 		if (cardOne < 1 || cardOne > 10 
 		 || cardTwo < 1 || cardTwo > 10) return false;
 
 		return (cardOne + cardTwo) == 11;
+
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+
+		return false;
 	}
 
 	/**
@@ -191,6 +196,53 @@ public class ElevensBoard extends Board {
 	 */
 	private boolean playJQKIfPossible() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 11 *** */
+
+		List<Integer> cards = cardIndexes();
+
+		if (containsJQK(cards)) {
+
+			int numKing = 0;
+			int numQueen = 0;
+			int numJack = 0;
+
+			List<Integer> toSwitch = new ArrayList<Integer>();
+
+			for (int card : cards) {
+				
+				if (cardAt(card).rank().equals("king")) {
+
+					if (numKing < 1) {
+						toSwitch.add(card);
+						numKing += 1;
+					}
+
+				}
+
+				if (cardAt(card).rank().equals("queen")) {
+
+					if (numQueen < 1) {
+						toSwitch.add(card);
+						numQueen += 1;
+					}
+
+				}
+
+				if (cardAt(card).rank().equals("jack")) {
+
+					if (numJack < 1) {
+						toSwitch.add(card);
+						numJack += 1;
+					}
+
+				}
+
+			}
+
+			replaceSelectedCards(toSwitch);
+
+			return true;
+		}
+
 		return false; // REPLACE !
 	}
 }
