@@ -108,16 +108,21 @@ public class ElevensBoard extends Board {
 		int indexOne = selectedCards.get(0);
 		int indexTwo = selectedCards.get(1);
 
+		try {
+
 		int cardOne = cardAt(indexOne).pointValue();
 		int cardTwo = cardAt(indexTwo).pointValue();
-
-		// System.out.println("CHECKING CARD SUMS cardOne: " + cardOne + "   cardTwo: " + cardTwo);
-		// System.out.println(cardOne + " + " + cardTwo + " == 11 ? " + ((cardOne + cardTwo) == 11));
 
 		if (cardOne < 1 || cardOne > 10 
 		 || cardTwo < 1 || cardTwo > 10) return false;
 
 		return (cardOne + cardTwo) == 11;
+
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+
+		return false;
 	}
 
 	/**
@@ -143,5 +148,101 @@ public class ElevensBoard extends Board {
 		}
 
 		return (numKing + numQueen + numJack) == 3;
+	}
+   
+    /**
+	 * Looks for a legal play on the board.  If one is found, it plays it.
+	 * @return true if a legal play was found (and made); false othewise.
+	 */
+	public boolean playIfPossible() {
+
+		return playPairSum11IfPossible() || playJQKIfPossible();
+	}
+
+	/**
+	 * Looks for a pair of non-face cards whose values sum to 11.
+	 * If found, replace them with the next two cards in the deck.
+	 * The simulation of this game uses this method.
+	 * @return true if an 11-pair play was found (and made); false othewise.
+	 */
+	private boolean playPairSum11IfPossible() {
+		
+      List<Integer> cards = cardIndexes();
+      
+      for (int card : cards) {
+         
+         for (int n = card + 1; n < BOARD_SIZE; n++) {
+            
+            List<Integer> toCheck = new ArrayList<Integer>();
+            toCheck.add(card);
+            toCheck.add(n);
+            
+            if (containsPairSum11(toCheck)) {
+            
+               replaceSelectedCards(toCheck);
+               return true;
+            }
+         }
+      }
+      
+		 return false;
+	}
+
+	/**
+	 * Looks for a group of three face cards JQK.
+	 * If found, replace them with the next three cards in the deck.
+	 * The simulation of this game uses this method.
+	 * @return true if a JQK play was found (and made); false othewise.
+	 */
+	private boolean playJQKIfPossible() {
+		/* *** TO BE IMPLEMENTED IN ACTIVITY 11 *** */
+
+		List<Integer> cards = cardIndexes();
+
+		if (containsJQK(cards)) {
+
+			int numKing = 0;
+			int numQueen = 0;
+			int numJack = 0;
+
+			List<Integer> toSwitch = new ArrayList<Integer>();
+
+			for (int card : cards) {
+				
+				if (cardAt(card).rank().equals("king")) {
+
+					if (numKing < 1) {
+						toSwitch.add(card);
+						numKing += 1;
+					}
+
+				}
+
+				if (cardAt(card).rank().equals("queen")) {
+
+					if (numQueen < 1) {
+						toSwitch.add(card);
+						numQueen += 1;
+					}
+
+				}
+
+				if (cardAt(card).rank().equals("jack")) {
+
+					if (numJack < 1) {
+						toSwitch.add(card);
+						numJack += 1;
+					}
+
+				}
+
+			}
+
+			replaceSelectedCards(toSwitch);
+
+			return true;
+		}
+
+		return false; // REPLACE !
 	}
 }
